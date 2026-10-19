@@ -1,0 +1,217 @@
+{
+  "name": "Conditional Routing with IF & Switch Nodes",
+  "nodes": [
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "documentId": {
+          "__rl": true,
+          "value": "1gMZG34_FWy5LTXJobXZackHe0VZXPbbjuODpl61xbK8",
+          "mode": "list",
+          "cachedResultName": "Decision",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1gMZG34_FWy5LTXJobXZackHe0VZXPbbjuODpl61xbK8/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1gMZG34_FWy5LTXJobXZackHe0VZXPbbjuODpl61xbK8/edit#gid=0"
+        },
+        "event": "rowAdded",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTrigger",
+      "typeVersion": 1,
+      "position": [
+        -544,
+        -32
+      ],
+      "id": "89862976-c10c-40a2-85a6-8658c5c97ebf",
+      "name": "Google Sheets Trigger",
+      "credentials": {
+        "googleSheetsTriggerOAuth2Api": {
+          "id": "hiGaOdx0yJVdYcZ2",
+          "name": "Google Sheets Trigger account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "478ffc8e-a418-4b32-a29d-0e1afcf1999d",
+              "leftValue": "={{ $json.Priority }}",
+              "rightValue": "High",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -304,
+        -32
+      ],
+      "id": "c91fe07b-f054-4903-adb9-059d89e966c2",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $json.Email }}",
+        "subject": "Urgent Task",
+        "emailType": "text",
+        "message": "={{ $('Google Sheets Trigger').item.json.Name }} ,Deadline : Today",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        -16,
+        -64
+      ],
+      "id": "58bb8158-61fe-4776-bb73-af50d589faa4",
+      "name": "Send a message",
+      "webhookId": "63f2706a-72c8-4937-8081-bbb4cec82dcd",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "D8aA06uBVb5vR05d",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $('Google Sheets Trigger').item.json.Email }}",
+        "subject": "Medium task",
+        "emailType": "text",
+        "message": "Deadline : 1week",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        288,
+        -32
+      ],
+      "id": "0bc9cc86-c70b-4415-8cc7-b41783c42e3e",
+      "name": "Send a message1",
+      "webhookId": "e1c9b781-edc2-41a6-84b8-0dd925c06f38",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "D8aA06uBVb5vR05d",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $('Google Sheets Trigger').item.json.Email }}",
+        "subject": "Low priority",
+        "emailType": "text",
+        "message": "Deadline : 1 month",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        416,
+        96
+      ],
+      "id": "bbc1db8f-b3ed-451a-b693-73d81ac1ca56",
+      "name": "Send a message2",
+      "webhookId": "f39c40f8-977f-4115-84f3-a5c5fff5a8d5",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "D8aA06uBVb5vR05d",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $('Google Sheets Trigger').item.json.Email }}",
+        "subject": "Lowest Priority",
+        "emailType": "text",
+        "message": "Deadline : 2 Months",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        224,
+        192
+      ],
+      "id": "e8ea9714-c3cf-431e-a0e7-f39ef78d1f98",
+      "name": "Send a message3",
+      "webhookId": "42ce3a38-0f4b-4de0-b2b0-3f2cb665ef1c",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "D8aA06uBVb5vR05d",
+          "name": "Gmail account"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Google Sheets Trigger": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Send a message1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "00d459a3-bc18-4cbf-8b1c-05574ec125ad",
+  "id": "6bQe7Ysnv3qu4UNa",
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {}
+}
